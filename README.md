@@ -20,3 +20,4 @@
  - 阿里云函数计算需要绑定已经备案的域名，如果没有，可以跳过本项目了。
  - `template.yml` 中有些配置和我的账号是绑定的，需要自行修改。
  - 依赖 fun 工具 https://help.aliyun.com/document_detail/64204.htm
+ - 本项目只是 api，前端界面为非常简单的 html，见 https://github.com/virusdefender/strcpy.me/blob/master/comment.html
