@@ -1,0 +1,43 @@
+ROSTemplateFormatVersion: '2015-09-01'
+Transform: 'Aliyun::Serverless-2018-04-03'
+Resources:
+  CRService:
+    Type: 'Aliyun::Serverless::Service'
+    Properties:
+      Description: 'site comment'
+      #### 请按照实际配置修改
+      Role: 'acs:ram::1149785954423647:role/fc-default-role'
+      VpcConfig:
+        VpcId: vpc-bp1ndmvjn8jgsgsz5n5t5
+        VSwitchIds:
+          - vsw-bp10240hmgrhpyyj76b98
+        SecurityGroupId: sg-bp10p2g1civoqgae5tw4
+      NasConfig:
+        UserId: 10015
+        GroupId: 10015
+        MountPoints:
+          - ServerAddr: '0cd1d4bc04-shi28.cn-hangzhou.nas.aliyuncs.com:/mnt/site-comment'
+            MountDir: /mnt/site-comment
+      InternetAccess: true
+    api:
+      Type: 'Aliyun::Serverless::Function'
+      Properties:
+        Handler: index.handler
+        CodeUri: './code.zip'
+        Description: 'api'
+        Runtime: custom
+      Events:
+        http_t:
+          Type: HTTP
+          Properties:
+            AuthType: ANONYMOUS
+            Methods: [ 'GET', 'POST', 'DELETE' ]
+  comment-fc.virusdefender.net:
+    Type: 'Aliyun::Serverless::CustomDomain'
+    Properties:
+      Protocol: HTTP
+      RouteConfig:
+        Routes:
+          '/*':
+            ServiceName: CRService
+            FunctionName: api
